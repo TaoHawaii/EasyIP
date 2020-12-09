@@ -12,12 +12,12 @@ Nic::Nic(const char* iface, const char* defaultIp):m_interface(iface)
   m_fileDescriptor = -1;
 	m_ifreqStruct.ifr_addr.sa_family = AF_INET;
 	strncpy(m_ifreqStruct.ifr_name, m_interface, IFNAMSIZ-1);
-  setLocalNicDevIp(defaultIp);
+  setLocalNicDeviceIp(defaultIp);
 }
 
 void Nic::setLocalNicDeviceIp(const char* IP)
 {
-  m_ifcfg_stream << "ifconfig" << ' ' << m_interface << ' ' << m_IP<<"/24";
+  m_ifcfg_stream << "ifconfig" << ' ' << m_interface << ' ' << m_currentIp<<"/24";
   system((const char*) m_ifcfg_stream.str().c_str());
 }
 
@@ -26,14 +26,14 @@ void Nic::setFileDescriptor(int fd)
   m_fileDescriptor = fd;
 }
 
-char* Nic::getName()
+const char* Nic::getName()
 {
   return m_interface;
 }
 
 char* Nic::getCurrentIP()
 {
-  return m_current_ip[];
+  return m_currentIp;
 }
 
 void Nic::queryLocalNicDeviceConfig()
@@ -46,11 +46,11 @@ void Nic::queryLocalNicDeviceConfig()
 	m_MAC_str[12]='\0';
   close(m_fileDescriptor);
   //save the IP address
-	strcpy(m_current_ip, inet_ntoa(((struct sockaddr_in *)&m_ifreqStruct.ifr_addr)->sin_addr));
+	strcpy(m_currentIp, inet_ntoa(((struct sockaddr_in *)&m_ifreqStruct.ifr_addr)->sin_addr));
 }
 
-void Nic::getMacAddress()
+char* Nic::getMacAddress()
 {
-  return m_MAC_str[];
+  return m_MAC_str;
 }
 

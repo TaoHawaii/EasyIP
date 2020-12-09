@@ -17,8 +17,8 @@
 //#include <sys/ioctl.h>
 //#include <net/if.h>
 #include <arpa/inet.h>
-#include "nic.c"
-#include "capture.c"
+#include "nic.cpp"
+#include "capture.cpp"
 
 /* ARP Header, (assuming Ethernet+IPv4)         */
 #define ARP_REQUEST 1                           /* ARP Request             */
